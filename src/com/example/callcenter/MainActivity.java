@@ -4,10 +4,14 @@ import java.io.*;
 import java.net.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Formatter;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.*;
 import android.view.View.*;
 import android.widget.Button;
@@ -15,7 +19,50 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
 	
-	static String sha1(String input) throws NoSuchAlgorithmException {
+	public void alertdialog()
+	{
+		
+		new AlertDialog.Builder(this)
+	    .setTitle("Ups...")
+	    .setMessage("Bad Login or Password")
+	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	        	dialog.cancel();
+	        }
+	     })
+	     .show();
+	}
+	
+	public void resultat()
+	{
+		TextView monTexte1 = (TextView)findViewById(R.id.editText1);
+	    TextView monTexte2 = (TextView)findViewById(R.id.editText2);
+	    String answer = "";
+	    
+		try {
+			answer = httpRequest("http://192.168.176.25/authentification.php?id="+monTexte1.getText()+"&mdp="+sha1(monTexte2.getText().toString()));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(answer.equals(" 1"))
+		{
+			System.out.println("OK");
+			//Changement de layout ->  callendar//
+		}
+		else
+		{
+			System.out.println("BAD");
+			Looper.prepare();
+
+	        alertdialog();
+
+	        Looper.loop();
+		}
+	}
+	
+	private String sha1(String input) throws NoSuchAlgorithmException {
         MessageDigest mDigest = MessageDigest.getInstance("SHA1");
         byte[] result = mDigest.digest(input.getBytes());
         StringBuffer sb = new StringBuffer();
@@ -26,7 +73,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, View
         return sb.toString();
     }
 	
-	public String httpRequest (String adress)
+	private String httpRequest (String adress)
 	{
 	  String answer = "", temp = "";
 	  try
@@ -52,6 +99,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, View
         Button b = (Button) findViewById(R.id.button1);
         b.setOnTouchListener((OnTouchListener) this);
         b.setOnClickListener((OnClickListener) this);
+        
     }
     
     public boolean onTouch(View v, MotionEvent event) {
@@ -60,16 +108,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, View
         {
 	  	    public void run() 
 	  	    {
-	  	    	TextView monTexte1 = (TextView)findViewById(R.id.editText1);
-	  	        TextView monTexte2 = (TextView)findViewById(R.id.editText2);
-	  	        String answer = "";
-				try {
-					answer = httpRequest("http://192.168.176.25/authentification.php?id="+monTexte1.getText()+"&mdp="+sha1(monTexte2.toString()));
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	  	    	System.out.println(answer);
+	  	    	resultat();
 	  	    }
 	  	}).start();
 
@@ -83,16 +122,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, View
         {
 	  	    public void run() 
 	  	    {
-	  	    	TextView monTexte1 = (TextView)findViewById(R.id.editText1);
-	  	        TextView monTexte2 = (TextView)findViewById(R.id.editText2);
-	  	    	String answer = "";
-				try {
-					answer = httpRequest("http://192.168.176.25/authentification.php?id="+monTexte1.getText()+"&mdp="+sha1(monTexte2.toString()));
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	  	    	System.out.println(answer);
+	  	    	resultat();
 	  	    }
 	  	}).start();
         
