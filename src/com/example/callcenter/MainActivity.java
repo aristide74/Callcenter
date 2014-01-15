@@ -6,12 +6,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.*;
 import android.view.View.*;
 import android.widget.Button;
@@ -25,6 +24,29 @@ public class MainActivity extends Activity implements View.OnTouchListener, View
 		new AlertDialog.Builder(this)
 	    .setTitle("Ups...")
 	    .setMessage("Bad Login or Password")
+	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	        	dialog.cancel();
+	        }
+	     })
+	     .show();
+	}
+	
+	public void alertdialog2(final CharSequence login, final String mdp)
+	{
+		
+		new AlertDialog.Builder(this)
+	    .setTitle("OK!")
+	    .setMessage("Choix du creneau horaire!")
+	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int which) { 
+	    		dialog.cancel();
+	    		Intent intent = new Intent(MainActivity.this, creneauHoraire.class);
+	    		intent.putExtra("login", login.toString());
+	    		intent.putExtra("mdp", mdp);
+	    		startActivity(intent);
+        	}
+	     })
 	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int which) { 
 	        	dialog.cancel();
@@ -49,7 +71,11 @@ public class MainActivity extends Activity implements View.OnTouchListener, View
 		if(answer.equals(" 1"))
 		{
 			System.out.println("OK");
-			//Changement de layout ->  callendar//
+			Looper.prepare();
+
+	        alertdialog2(monTexte1.getText(),monTexte2.getText().toString());
+
+	        Looper.loop();
 		}
 		else
 		{
