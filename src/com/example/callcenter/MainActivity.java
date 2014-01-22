@@ -16,7 +16,7 @@ import android.view.View.*;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener {
 	
 	public void alertdialog()
 	{
@@ -123,24 +123,10 @@ public class MainActivity extends Activity implements View.OnTouchListener, View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button b = (Button) findViewById(R.id.button1);
-        b.setOnTouchListener((OnTouchListener) this);
         b.setOnClickListener((OnClickListener) this);
         
     }
     
-    public boolean onTouch(View v, MotionEvent event) {
-    	     
-        new Thread (new Runnable() 
-        {
-	  	    public void run() 
-	  	    {
-	  	    	resultat();
-	  	    }
-	  	}).start();
-
-    	
-        return true;
-      }
     
     public void onClick(View v) {
     	
