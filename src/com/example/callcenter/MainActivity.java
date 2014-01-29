@@ -22,8 +22,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	{
 		
 		new AlertDialog.Builder(this)
-	    .setTitle("Ups...")
-	    .setMessage("Bad Login or Password")
+	    .setTitle("Erreur")
+	    .setMessage("Connexion impossible")
 	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int which) { 
 	        	dialog.cancel();
@@ -36,8 +36,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	{
 		
 		new AlertDialog.Builder(this)
-	    .setTitle("OK!")
-	    .setMessage("Choix du creneau horaire!")
+	    .setTitle("Bienvenue!")
+	    .setMessage("Séléctionnez votre créneau horaire")
 	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int which) { 
 	    		dialog.cancel();
@@ -46,11 +46,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	    		intent.putExtra("mdp", mdp);
 	    		startActivity(intent);
         	}
-	     })
-	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) { 
-	        	dialog.cancel();
-	        }
 	     })
 	     .show();
 	}
