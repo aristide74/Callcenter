@@ -4,7 +4,9 @@ import java.io.*;
 import java.net.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +16,7 @@ import android.os.Looper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.*;
 import android.view.View.*;
 import android.widget.ArrayAdapter;
@@ -28,6 +31,25 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	private Spinner annee = null;
 	private Spinner jour = null;
 	private Spinner mois = null;
+	
+	public static int testDate(String date) 
+	{ 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");  
+		Date d = new Date(); 
+		try 
+		{ 
+			d = sdf.parse(date); 
+			String t = sdf.format(d); 
+			if(t.compareTo(date) != 0) 
+			return 0;
+			else 
+			return 1; 
+		} 
+		catch (Exception e) 
+		{ 
+			return 0;
+		} 
+	} 
 	
 	public static String encode(String input) {
 		Matcher m = Pattern.compile("[^a-zA-Z0-9._-]").matcher(input);
@@ -61,8 +83,8 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 		{
 			
 			new AlertDialog.Builder(this)
-		    .setTitle("Ups...")
-		    .setMessage("Bad Login or Password or date formating")
+		    .setTitle("Erreur")
+		    .setMessage("Créneau horaire déjà occupé!")
 		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int which) { 
 		        	dialog.cancel();
@@ -78,6 +100,20 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 		    .setTitle("Félicitation")
 		    .setMessage("Le RDV est enregistré")
 		    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int which) { 
+		        	dialog.cancel();
+		        }
+		     })
+		     .show();
+		}
+		
+		public void alertdialog3()
+		{
+			
+			new AlertDialog.Builder(this)
+		    .setTitle("Erreur")
+		    .setMessage("Mauvais formatage de Date!")
+		    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int which) { 
 		        	dialog.cancel();
 		        }
@@ -123,31 +159,44 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 
 		    String answer = "";
 		    
-			try {
-				answer = httpRequest("http://192.168.176.25/addRdv.php?id="+login+"&mdp="+sha1(mdp)+"&date="+annee.getSelectedItem().toString()+"-"+mois.getSelectedItem().toString()+"-"+jour.getSelectedItem().toString()+"%20"+heure.getSelectedItem().toString()+":"+minute.getSelectedItem().toString()+":00&sujet="+encode(monTexte3.getText().toString()));
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			if(answer.equals(" 1"))
-			{
-				System.out.println("OK");
+		    if(testDate(annee.getSelectedItem().toString()+"/"+mois.getSelectedItem().toString()+"/"+jour.getSelectedItem().toString())==1)
+		    {
+		    
+				try {
+					answer = httpRequest("http://192.168.176.25/addRdv.php?id="+login+"&mdp="+sha1(mdp)+"&date="+annee.getSelectedItem().toString()+"-"+mois.getSelectedItem().toString()+"-"+jour.getSelectedItem().toString()+"%20"+heure.getSelectedItem().toString()+":"+minute.getSelectedItem().toString()+":00&sujet="+encode(monTexte3.getText().toString()));
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(answer.equals(" 1"))
+				{
+					System.out.println("OK");
+					Looper.prepare();
+	
+					alertdialog2();
+	
+			        Looper.loop();
+				}
+				else
+				{
+					System.out.println("BAD");
+					Looper.prepare();
+	
+					alertdialog();
+	
+			        Looper.loop();
+				}
+		    }
+		    else
+		    {
+		    	System.out.println("BAD");
 				Looper.prepare();
 
-				alertdialog2();
+				alertdialog3();
 
 		        Looper.loop();
-			}
-			else
-			{
-				System.out.println("BAD");
-				Looper.prepare();
-
-				alertdialog();
-
-		        Looper.loop();
-			}
+		    }
 		}
 	
 		protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +205,8 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	        setContentView(R.layout.creneau);
 	        Button b = (Button) findViewById(R.id.button1);
 	        b.setOnClickListener((OnClickListener) this);
+	        Button c = (Button) findViewById(R.id.button2);
+	        c.setOnClickListener(OnClick2);
 	        
 	       heure = (Spinner) findViewById(R.id.spinner1);
 	        List<String> exemple = new ArrayList<String>();
@@ -283,6 +334,25 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 
 	    }
 
+		View.OnClickListener OnClick2 = new View.OnClickListener() 
+		{
+		    public void onClick(View v) 
+		    {
+		    	 new Thread (new Runnable() 
+		         {
+		 	  	    public void run() 
+		 	  	    {
+		 	  	    	Intent intent = new Intent(creneauHoraire.this, Planing.class);
+		 	  	    	String login = (String) getIntent().getSerializableExtra("login");
+		 			    String mdp = (String) getIntent().getSerializableExtra("mdp");
+			    		intent.putExtra("login", login.toString());
+			    		intent.putExtra("mdp", mdp);
+			    		startActivity(intent);
+		 	  	    }
+		 	  	}).start();
+		    }
+		};
+	    
 	    public void onClick(View v) {
 	    	
 	        new Thread (new Runnable() 
@@ -294,4 +364,5 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 		  	}).start();
 	        
 	    }
+
 	}
