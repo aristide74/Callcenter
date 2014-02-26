@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import android.os.Bundle;
 import android.os.Looper;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -32,6 +33,7 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	private Spinner jour = null;
 	private Spinner mois = null;
 	
+	@SuppressLint("SimpleDateFormat")
 	public static int testDate(String date) 
 	{ 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");  
@@ -198,6 +200,24 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 		        Looper.loop();
 		    }
 		}
+		
+		@SuppressLint("SimpleDateFormat")
+		public String requeteCreneau()
+		{
+
+			String format = "yyyy-MM-dd"; 
+
+			java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format ); 
+			java.util.Date date = new java.util.Date(); 
+
+			String datedujour = formater.format( date ); 
+			
+			String answer = "";
+			answer = httpRequest("http://192.168.176.25/checkdate.php?date="+datedujour);
+			
+			return answer;
+
+		}
 	
 		protected void onCreate(Bundle savedInstanceState) {
 	    	
@@ -342,11 +362,9 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 		         {
 		 	  	    public void run() 
 		 	  	    {
+		 	  	    	String answer = requeteCreneau();
 		 	  	    	Intent intent = new Intent(creneauHoraire.this, Planing.class);
-		 	  	    	String login = (String) getIntent().getSerializableExtra("login");
-		 			    String mdp = (String) getIntent().getSerializableExtra("mdp");
-			    		intent.putExtra("login", login.toString());
-			    		intent.putExtra("mdp", mdp);
+			    		intent.putExtra("answer", answer);
 			    		startActivity(intent);
 		 	  	    }
 		 	  	}).start();
