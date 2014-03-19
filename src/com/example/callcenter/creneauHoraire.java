@@ -6,7 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -202,18 +204,14 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 		}
 		
 		@SuppressLint("SimpleDateFormat")
-		public String requeteCreneau()
+		public String requeteCreneau(Calendar date)
 		{
-
-			String format = "yyyy-MM-dd"; 
-
-			java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format ); 
-			java.util.Date date = new java.util.Date(); 
-
-			String datedujour = formater.format( date ); 
+			Date date2 = date.getTime();
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			String datestr = format1.format(date2); 
 			
 			String answer = "";
-			answer = httpRequest("http://192.168.176.25/checkdate.php?date="+datedujour);
+			answer = httpRequest("http://192.168.176.25/checkdate.php?date="+datestr);
 			
 			return answer;
 
@@ -360,11 +358,15 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 		    {
 		    	 new Thread (new Runnable() 
 		         {
-		 	  	    public void run() 
+		 	  	    @SuppressLint("SimpleDateFormat")
+					public void run() 
 		 	  	    {
-		 	  	    	String answer = requeteCreneau();
+		 	  	    	Calendar date=new GregorianCalendar(); 
+		 	  	    	String answer = requeteCreneau(date);
+		 	  	    	
 		 	  	    	Intent intent = new Intent(creneauHoraire.this, Planing.class);
 			    		intent.putExtra("answer", answer);
+			    		intent.putExtra("date", date);
 			    		startActivity(intent);
 		 	  	    }
 		 	  	}).start();

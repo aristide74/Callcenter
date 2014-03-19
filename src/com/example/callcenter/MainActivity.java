@@ -57,22 +57,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	    String answer = "";
 	    
 		try {
-			answer = httpRequest("http://192.168.176.25/authentification.php?id="+monTexte1.getText()+"&mdp="+sha1(monTexte2.getText().toString()));
+			answer = httpRequest("http://192.168.176.25/authentification.php?mail="+monTexte1.getText()+"&mdp="+sha1(monTexte2.getText().toString()));
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		if(answer.equals(" 1"))
-		{
-			System.out.println("OK");
-			Looper.prepare();
-
-	        alertdialog2(monTexte1.getText(),monTexte2.getText().toString());
-
-	        Looper.loop();
-		}
-		else
+		if(answer.equals(" 0"))
 		{
 			System.out.println("BAD");
 			Looper.prepare();
@@ -80,6 +71,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	        alertdialog();
 
 	        Looper.loop();
+			
+		}
+		else
+		{
+			System.out.println("OK");
+			String id = answer.substring(1);
+			Looper.prepare();
+
+	        alertdialog2(id,monTexte2.getText().toString());
+
+	        Looper.loop();
+			
 		}
 	}
 	
