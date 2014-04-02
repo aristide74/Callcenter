@@ -4,9 +4,12 @@ import java.io.*;
 import java.net.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.os.Bundle;
 import android.os.Looper;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,6 +27,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		new AlertDialog.Builder(this)
 	    .setTitle("Erreur")
 	    .setMessage("Connexion impossible")
+	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) { 
+	        	dialog.cancel();
+	        }
+	     })
+	     .show();
+	}
+	
+	public void alertdialog3()
+	{
+		
+		new AlertDialog.Builder(this)
+	    .setTitle("Compte inactif")
+	    .setMessage("Vous avez reçu un Mail")
 	    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int which) { 
 	        	dialog.cancel();
@@ -69,6 +86,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			Looper.prepare();
 
 	        alertdialog();
+
+	        Looper.loop();
+			
+		}else if(answer.equals(" -1"))
+		{
+			System.out.println("NOT");
+			Looper.prepare();
+
+	        alertdialog3();
 
 	        Looper.loop();
 			
@@ -122,9 +148,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         Button b = (Button) findViewById(R.id.button1);
         b.setOnClickListener((OnClickListener) this);
+        Button c = (Button) findViewById(R.id.button2);
+        c.setOnClickListener(OnClick2);
         
     }
     
+    View.OnClickListener OnClick2 = new View.OnClickListener() 
+	{
+	    public void onClick(View v) 
+	    {
+	    	 new Thread (new Runnable() 
+	         {
+				public void run() 
+	 	  	    {
+	 	  	    	Intent intent = new Intent(MainActivity.this, Motdepasse.class);
+		    		startActivity(intent);
+	 	  	    }
+	 	  	}).start();
+	    }
+	};
     
     public void onClick(View v) {
     	

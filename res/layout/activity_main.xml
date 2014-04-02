@@ -49,4 +49,12 @@
         android:layout_marginTop="250dp"
         android:text="Connecter" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        android:text="Mot de Passe Oublier?" />
+
 </RelativeLayout>

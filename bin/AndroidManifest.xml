@@ -37,6 +37,10 @@
             android:name="com.example.callcenter.Planing"
             android:label="@string/title_activity_planing" >
         </activity>
+        <activity
+            android:name="com.example.callcenter.Motdepasse"
+            android:label="@string/title_activity_motdepasse" >
+        </activity>
     </application>
 
 </manifest>
