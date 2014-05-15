@@ -253,7 +253,6 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	        exemple.add("22");
 	        exemple.add("23");
 	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple);
-	        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        heure.setAdapter(adapter);
 	        
 	        minute = (Spinner) findViewById(R.id.spinner2);
@@ -261,7 +260,6 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	        exemple2.add("00");
 	        exemple2.add("30");
 	        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple2);
-	        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        minute.setAdapter(adapter2);
 	        
 	        annee = (Spinner) findViewById(R.id.spinner3);
@@ -291,7 +289,6 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	        exemple3.add("2036");
 	        exemple3.add("2037");
 	        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple3);
-	        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        annee.setAdapter(adapter3);
 	        
 	        mois = (Spinner) findViewById(R.id.spinner4);
@@ -310,7 +307,6 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	        exemple4.add("11");
 	        exemple4.add("12");
 	        ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple4);
-	        adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        mois.setAdapter(adapter4);
 	        
 	        jour = (Spinner) findViewById(R.id.spinner5);
@@ -347,7 +343,6 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	        exemple5.add("30");
 	        exemple5.add("31");
 	        ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exemple5);
-	        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        jour.setAdapter(adapter5);
 
 	    }
