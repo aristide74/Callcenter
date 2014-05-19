@@ -297,7 +297,6 @@ public class creneauHoraire extends Activity implements View.OnClickListener {
 	        List<String> exemple4 = new ArrayList<String>();
 	        exemple4.add("01");
 	        exemple4.add("02");
-	        exemple4.add("02");
 	        exemple4.add("03");
 	        exemple4.add("04");
 	        exemple4.add("05");

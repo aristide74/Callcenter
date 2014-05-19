@@ -67,16 +67,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	{
 		TextView monTexte1 = (TextView)findViewById(R.id.editText1);
 	    TextView monTexte2 = (TextView)findViewById(R.id.editText2);
-	    String answer = "";
+	    String answer = " 0";
 	    
-		try {
-			answer = httpRequest("http://192.168.176.25/authentification.php?mail="+monTexte1.getText()+"&mdp="+sha1(monTexte2.getText().toString()));
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String mdpp = "";
 		
-		if(answer.equals(" 0"))
+		if(!monTexte2.getText().toString().equals(""))
+		{
+			try {
+				mdpp = sha1(monTexte2.getText().toString());
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		answer = httpRequest("http://192.168.176.25/authentification.php?mail="+monTexte1.getText()+"&mdp="+mdpp);
+
+		
+		
+		if(answer.equals(" 0") || answer.equals(null))
 		{
 			System.out.println("BAD");
 			Looper.prepare();
@@ -95,7 +104,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 	        Looper.loop();
 			
 		}
-		else
+		else 
 		{
 			System.out.println("OK");
 			String id = answer.substring(1);
