@@ -3,8 +3,12 @@
 
     <string name="app_name">CallCenter</string>
     <string name="action_settings">Settings</string>
+    <string name="planning">Planning</string>
+    <string name="creneau">Créneau</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_planing">Planing</string>
     <string name="title_activity_motdepasse">Motdepasse</string>
+    <string name="title_activity_my_calendar_activity">Calendrier</string>
+    
 
 </resources>
